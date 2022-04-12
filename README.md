@@ -1,6 +1,6 @@
 # COP4520_Assignment3
 
-## Problem 1: The Birthday Presents Party (50 points)
+## Problem 1: The Birthday Presents Party
 ### Compilation Instructions for Solution
 To run the program, open up a command prompt window. From there enter:
 ```

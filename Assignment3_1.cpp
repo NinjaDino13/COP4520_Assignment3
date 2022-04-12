@@ -2,7 +2,7 @@
 #include <thread>
 #include <mutex>
 #include <vector>
-#include <chrono>
+
 class Node;
 class LazyLinkedList;
 
@@ -25,12 +25,12 @@ class Node {
 
 class LazyLinkedList {
     private:
+        Node head;
         bool validate(Node* pred, Node* curr) {
             return !pred->marked && !curr->marked && pred->next == curr;
         }
     
     public:
-        Node head;
         LazyLinkedList() {
             head.item = INT_MIN;
             this->head.next = new Node(INT_MAX);
