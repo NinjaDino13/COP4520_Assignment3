@@ -2,7 +2,9 @@
 #include <thread>
 #include <mutex>
 #include <vector>
+#include <chrono>
 class Node;
+class LazyLinkedList;
 
 class Node {
     public:
@@ -53,7 +55,6 @@ class LazyLinkedList {
                                 Node* node = new Node(item);
                                 node->next = curr;
                                 pred->next = node;
-                                std::cout << "Succeeded in adding " << item << " to the list.\n";
                                 return true;
                             }
                         }
@@ -84,7 +85,6 @@ class LazyLinkedList {
                             } else {
                                 curr->marked = true;
                                 pred->next = curr->next;
-                                std::cout << "Succeeded in removing " << item << " from the list.\n";
                                 return true;
                             }
                         }
@@ -105,27 +105,34 @@ class LazyLinkedList {
         }
 };
 
-void servant(int low, int high) {
-    
+LazyLinkedList present_chain;
+
+bool addPresent(int item) {
+    return present_chain.add(item);
+}
+
+bool writeThankYou(int item) {
+    return present_chain.remove(item);
+}
+
+bool checkForGift(int item) {
+    return present_chain.contains(item);
+}
+
+void servant(int num) {
+    for (int i = num; i < 500000; i += 4) {
+        addPresent(i);
+        if (checkForGift(i)) writeThankYou(i);
+    }
 }
 
 int main()
 {
-    std::cout << "gaming" << std::endl;
-    LazyLinkedList test;
-    test.add(1);
-    test.add(2);
-    test.add(3);
-    if (test.contains(1)) std::cout << "Found 1\n";
-    if (test.contains(2)) std::cout << "Found 2\n";
-    if (test.contains(3)) std::cout << "Found 3\n";
-    test.remove(1);
-    test.remove(2);
-    test.remove(3);
-    if (!test.contains(1)) std::cout << "Did not find 1\n";
-    if (!test.contains(2)) std::cout << "Did not find 2\n";
-    if (!test.contains(3)) std::cout << "Did not find 3\n";
-    //std::cout << test.head.item << " " << test.head.next->item << " " << test.head.next->next->item << " " << test.head.next->next->next->item << "\n";
+    std::vector<std::thread> servants;
 
+    for (int i = 0; i < 4; i++) servants.push_back(std::thread(servant, i));
+    for (std::thread &serv : servants) serv.join();
+
+    std::cout << "The servants have completed writing thank you notes for all 500000 gifts.";
     return 0;
 }
