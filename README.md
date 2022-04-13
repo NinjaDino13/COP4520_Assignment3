@@ -12,7 +12,7 @@ This will compile the code and create the .exe file for it, named Assignment1.ex
 ```
 This will run the code within the command prompt.
 
-## Problem 2: Atmospheric Temperature Reading Module (50 points)
+## Problem 2: Atmospheric Temperature Reading Module
 
 ### Compilation Instructions for Solution
 To run the program, open up a command prompt window. From there enter:
