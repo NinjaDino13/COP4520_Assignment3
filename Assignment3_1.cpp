@@ -2,6 +2,8 @@
 #include <thread>
 #include <mutex>
 #include <vector>
+#include <algorithm>
+#include <random>
 
 class Node;
 class LazyLinkedList;
@@ -106,6 +108,8 @@ class LazyLinkedList {
 };
 
 LazyLinkedList present_chain;
+std::vector<int> bag_of_gifts;
+int fails = 0;
 
 bool addPresent(int item) {
     return present_chain.add(item);
@@ -122,17 +126,32 @@ bool checkForGift(int item) {
 void servant(int num) {
     for (int i = num; i < 500000; i += 4) {
         addPresent(i);
-        if (checkForGift(i)) writeThankYou(i);
+        if (checkForGift(i))
+            writeThankYou(i);
+        else
+            fails++;
+        //std::cout << "Servant " << num << " just finished gift #" << bag_of_gifts[i] << ".\n";
     }
 }
 
 int main()
 {
+    for(int i = 0; i < 500000; i++) {
+        bag_of_gifts.push_back(i);
+    }
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(bag_of_gifts.begin(), bag_of_gifts.end(), g);
     std::vector<std::thread> servants;
 
     for (int i = 0; i < 4; i++) servants.push_back(std::thread(servant, i));
     for (std::thread &serv : servants) serv.join();
 
-    std::cout << "The servants have completed writing thank you notes for all 500000 gifts.";
+    if (fails == 0)
+        std::cout << "The servants have completed writing thank you notes for all 500000 gifts.";
+    else
+        std::cout << "The servants failed to write enough thank you notes.";
+
     return 0;
 }
