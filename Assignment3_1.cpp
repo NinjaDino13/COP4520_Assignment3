@@ -25,6 +25,7 @@ class Node {
         }
 };
 
+// This code comes from the textbook.
 class LazyLinkedList {
     private:
         Node head;
@@ -125,9 +126,9 @@ bool checkForGift(int item) {
 
 void servant(int num) {
     for (int i = num; i < 500000; i += 4) {
-        addPresent(i);
-        if (checkForGift(i))
-            writeThankYou(i);
+        addPresent(bag_of_gifts[i]);
+        if (checkForGift(bag_of_gifts[i]))
+            writeThankYou(bag_of_gifts[i]);
         else
             fails++;
         //std::cout << "Servant " << num << " just finished gift #" << bag_of_gifts[i] << ".\n";
