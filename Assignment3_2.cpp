@@ -10,6 +10,8 @@ int highs[5], lows[5], readings[480];
 int largest_interval = 0, largest_diff = -1, interval[80];
 std::default_random_engine generator(time(NULL));
 std::uniform_int_distribution<int> distribution(-100, 70);
+const int integer_min = -2147483648;
+const int integer_max = 2147483647;
 
 int getReading() {
     return distribution(generator);
@@ -22,21 +24,21 @@ void core(int id) {
 }
 
 void findLargestFive() {
-    int maxs[] = {INT_MIN, INT_MIN, INT_MIN, INT_MIN, INT_MIN};
-    int curr_max = INT_MIN;
+    int maxs[] = {integer_min, integer_min, integer_min, integer_min, integer_min};
+    int curr_max = integer_min;
     for (int i = 0; i < 480; i++) {
         if (curr_max < readings[i])
             curr_max = readings[i];
     }
     maxs[0] = curr_max;
-    curr_max = INT_MIN;
+    curr_max = integer_min;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 480; j++) {
             if (curr_max < readings[j] && readings[j] < maxs[i])
                 curr_max = readings[j];
         }
         maxs[i+1] = curr_max;
-        curr_max = INT_MIN;
+        curr_max = integer_min;
     }
     for (int i = 0; i < 5; i++) {
         highs[i] = maxs[i];
@@ -44,21 +46,21 @@ void findLargestFive() {
 }
 
 void findSmallestFive() {
-    int mins[] = {INT_MAX, INT_MAX, INT_MAX, INT_MAX, INT_MAX};
-    int curr_min = INT_MAX;
+    int mins[] = {integer_max, integer_max, integer_max, integer_max, integer_max};
+    int curr_min = integer_max;
     for (int i = 0; i < 480; i++) {
         if (curr_min > readings[i])
             curr_min = readings[i];
     }
     mins[0] = curr_min;
-    curr_min = INT_MAX;
+    curr_min = integer_max;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 480; j++) {
             if (curr_min > readings[j] && readings[j] > mins[i])
                 curr_min = readings[j];
         }
         mins[i+1] = curr_min;
-        curr_min = INT_MAX;
+        curr_min = integer_max;
     }
     for (int i = 0; i < 5; i++) {
         lows[i] = mins[i];

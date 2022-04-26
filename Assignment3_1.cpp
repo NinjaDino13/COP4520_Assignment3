@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <random>
 
+const int integer_min = -2147483648;
+const int integer_max = 2147483647;
+
 class Node;
 class LazyLinkedList;
 
@@ -35,8 +38,8 @@ class LazyLinkedList {
     
     public:
         LazyLinkedList() {
-            head.item = INT_MIN;
-            this->head.next = new Node(INT_MAX);
+            head.item = integer_min;
+            this->head.next = new Node(integer_max);
         }
 
         bool add(int item) {
